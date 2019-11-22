@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<style type="text/css">
+		<!--
+		.tab {transition:3s all;margin: 25px;}
+		.tab:hover{transition:3s all; font-size:25px}
+		-->
+	</style>
+	
+	<head>
+		<meta charset="UTF-8">
+		<title>Фильмы</title>
+	</head>
+
+	<body>
+		<div align="center">
+			<a class="tab" href="{{ url_for('window') }}">Домашняя страница </a>
+			<a class="tab" href="{{ url_for('courses') }}">Курсы валют </a>
+			<a class="tab" href="{{ url_for('movies') }}">Фильмы </a>
+			<a class="tab" href="{{ url_for('weather') }}">Погода </a>
+		</div>
+		
+		<h1 align="center">
+			Сегодня в кинотеатрах {{ data_now }}
+		</h1>
+	
+		<ul>
+			{% for movies in data_movies %}
+			<li style=" display: inline-block; vertical-align: top; width: 149px; padding: 21px">
+				
+				<a href="{{ movies.link }}">
+					<img src="{{ movies.image }} ">
+				</a>
+				
+				<b>
+					{{ movies.name }}
+				</b>
+				
+				<p>
+					{{ movies.info }}
+				</p>
+				
+			</li>
+			{% endfor %}
+		</ul>
+	</body>
+</html>

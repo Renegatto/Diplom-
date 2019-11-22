@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<style type="text/css">
+		<!--
+		.tab {transition:3s all;margin: 25px;}
+		.tab:hover{transition:3s all; font-size:25px}
+		-->
+	</style>
+	
+	<head>
+		<meta charset="UTF-8">
+		<title>Диплом</title>
+	</head>
+
+	<h2 align="center">Сайт для Диплома по языку Python</h2>
+	
+	<body>
+		<div align="center">
+			 <h4><a class="tab" align="center" href="{{ url_for('window') }}">Домашняя страница </a></h4>
+			 <h4><a class="tab" align="center" href="{{ url_for('courses') }}">Курсы валют </a></h4>
+			 <h4><a class="tab" align="center" href="{{ url_for('movies') }}">Фильмы </a></h4>
+			 <h4><a class="tab" align="center" href="{{ url_for('weather') }}">Погода </a></h4>
+		</div>
+	</body>
+</html>
