@@ -1,22 +1,23 @@
-from bs4 import BeautifulSoup
+from .config import movies_api
 import requests
+from bs4 import BeautifulSoup
 
 def movies_url():
-	url = BeautifulSoup(requests.get('https://afisha.tut.by/film/').text, 'lxml')
+	url = BeautifulSoup(requests.get(movies_api).text, 'lxml')
 	return url
 
-def data_movies():
+def html_movies():
 	films = movies_url().find('div', class_='events-block js-cut_wrapper').find_all('li')
-	movies = list()
+	movies_list = list()
 
-	for data in films:
-	    temp = dict()
-	    temp['name'] = data.find('img').get('alt')
-	    temp['link'] = data.find('a').get('href')
-	    temp['image'] = data.find('img').get('src')
-	    temp['info'] = data.find('div').find('p').text
-	    movies.append(temp)
-	return movies
+	for i in films:
+	    box = dict()
+	    box['name'] = i.find('img').get('alt')
+	    box['link'] = i.find('a').get('href')
+	    box['image'] = i.find('img').get('src')
+	    box['info'] = i.find('div').find('p').text
+	    movies_list.append(box)
+	return movies_list
 
 def bot_movies():
 	url = movies_url()

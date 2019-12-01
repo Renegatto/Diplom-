@@ -1,14 +1,13 @@
 import requests
+from .config import weather_api
 
 def get_weather_city(city = 'Minsk'):
-    app_id = "94d8b74c4d0c302754e1af1f42419289"
-    data = dict()
-    weather = requests.get(
-        'http://api.openweathermap.org/data/2.5/weather?appid={}&q={}&units=metric'.format(app_id, city)).json()
-    data['city'] = weather['name']
-    data['temp'] = weather['main']['temp']
-    data['temp_max'] = weather['main']['temp_max']
-    data['temp_min'] = weather['main']['temp_min']
-    data['humidity'] = weather['main']['humidity']
-    data['pressure'] = weather['main']['pressure']
-    return data
+    box = dict()
+    url = requests.get(weather_api).json()
+    box['city'] = url['name']
+    box['temp'] = url['main']['temp']
+    box['temp_max'] = url['main']['temp_max']
+    box['temp_min'] = url['main']['temp_min']
+    box['humidity'] = url['main']['humidity']
+    box['pressure'] = url['main']['pressure']
+    return box

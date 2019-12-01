@@ -1,6 +1,6 @@
 import datetime
 from flask import render_template, url_for, Flask
-from component import data_movies, data_money, get_weather_city
+from component import html_movies, url_money, get_weather_city
 
 tok = Flask(__name__)
 
@@ -11,11 +11,11 @@ def window():
 
 @tok.route('/courses')
 def courses():
-    return render_template('courses.html', data_now = datetime.datetime.now().date(), money = data_money())
+    return render_template('courses.html', data_now = datetime.datetime.now().date(), url_money = url_money())
 
 @tok.route('/movies')
 def movies():
-    return render_template('movies.html', data_now = datetime.datetime.now().date(), data_movies = data_movies())
+    return render_template('movies.html', data_now = datetime.datetime.now().date(), html_movies = html_movies())
 
 @tok.route('/weather')
 def weather():

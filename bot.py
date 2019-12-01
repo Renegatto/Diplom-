@@ -1,7 +1,7 @@
 import telebot
 import pyowm
 from component import bot_api, weather_api
-from component import data_money
+from component import data_money, money_list
 from component import bot_movies
 
 
@@ -80,205 +80,67 @@ def bot_course_all(callback_query: telebot.types.CallbackQuery):
 
 @bot.callback_query_handler(lambda c: c.data == '/courses')
 def bot_courses(callback_query: telebot.types.CallbackQuery):
-	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'AUD':
-			aud_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'BGN':
-			bgn_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'UAH':
-			uah_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'DKK':
-			dkk_price = p['Cur_OfficialRate']		
-		elif p['Cur_Abbreviation'] == 'USD':
-			usd_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'EUR':
-			eur_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'PLN':
-			pln_price = p['Cur_OfficialRate']	
-		elif p['Cur_Abbreviation'] == 'IRR':
-			irr_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'ISK':
-			isk_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'JPY':
-			jpy_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'CAD':
-			cad_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'CNY':
-			cny_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'KWD':
-			kwd_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'MDL':
-			mdl_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'NZD':
-			nzd_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'NOK':
-			nok_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'RUB':
-			rub_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'XDR':
-			xdr_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'SGD':
-			sgd_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'KGS':
-			kgs_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'KZT':
-			kzt_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'TRY':
-			try_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'GBP':
-			gbp_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'CZK':
-			czk_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'SEK':
-			sek_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'CHF':
-			chf_price = p['Cur_OfficialRate']
-	bot.send_message(callback_query.from_user.id, f'Курс Белорусского рубля (BYN) по отношению к иностранной валюте на сегодня: \n\
-1 Австралийский доллар (AUD) за {aud_price} BYN \n1 Болгарский лев (BGN) за {bgn_price} BYN \n100 Гривен (UAH) за {uah_price} BYN \n\
-10 Датских крон (DKK) за {dkk_price} BYN \n1 Доллар США (USD) за {usd_price} BYN \n1 Евро (EUR) за {eur_price} BYN \n10 Злотых (PLN) за \
-{pln_price} BYN \n100000 Иранских риал (IRR) за {irr_price} BYN \n100 Исландских крон (ISK) за {isk_price} BYN \n100 Йен (JPY) за {jpy_price} \
-BYN \n1 Канадский доллар (CAD) за {cad_price} BYN \n10 Китайских юаней (CNY) за {cny_price} BYN \n1 Кувейтский динар (KWD) за {kwd_price} BYN \n\
-10 Молдавских лей (MDL) за {mdl_price} BYN \n1 Новозеландский доллар (NZD) за {nzd_price} BYN \n10 Норвежских крон (NOK) за {nok_price} BYN \n\
-100 Российских рублей (RUB) за {rub_price} BYN \n1 СДР (Специальные права заимствования) (XDR) за {xdr_price} BYN \n1 Сингапурский доллар \
-(SGD) за {sgd_price} BYN \n100 Сом (KGS) за {kgs_price} BYN \n1000 Тенге (KZT) за {kzt_price} BYN \n10 Турецких лир (TRY) за {try_price} BYN \n\
-1 Фунт стерлингов (GBP) за {gbp_price} BYN \n100 Чешских крон (CZK) за {czk_price} BYN \n10 Шведских крон (SEK) {sek_price} BYN \n\
-1 Швейцарский франк (CHF) {chf_price} BYN')
-
+	try:
+		money = data_money()
+		bot.send_message(callback_query.from_user.id, money)
+	except ConnectionError:
+		return 404
 @bot.message_handler(commands=['courses'])
 def send_money(message):
 	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'AUD':
-			aud_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'BGN':
-			bgn_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'UAH':
-			uah_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'DKK':
-			dkk_price = p['Cur_OfficialRate']		
-		elif p['Cur_Abbreviation'] == 'USD':
-			usd_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'EUR':
-			eur_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'PLN':
-			pln_price = p['Cur_OfficialRate']	
-		elif p['Cur_Abbreviation'] == 'IRR':
-			irr_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'ISK':
-			isk_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'JPY':
-			jpy_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'CAD':
-			cad_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'CNY':
-			cny_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'KWD':
-			kwd_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'MDL':
-			mdl_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'NZD':
-			nzd_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'NOK':
-			nok_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'RUB':
-			rub_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'XDR':
-			xdr_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'SGD':
-			sgd_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'KGS':
-			kgs_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'KZT':
-			kzt_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'TRY':
-			try_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'GBP':
-			gbp_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'CZK':
-			czk_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'SEK':
-			sek_price = p['Cur_OfficialRate']
-		elif p['Cur_Abbreviation'] == 'CHF':
-			chf_price = p['Cur_OfficialRate']
-	bot.send_message(message.chat.id, f'Курс Белорусского рубля (BYN) по отношению к иностранной валюте на сегодня: \n\
-1 Австралийский доллар (AUD) за {aud_price} BYN \n1 Болгарский лев (BGN) за {bgn_price} BYN \n100 Гривен (UAH) за {uah_price} BYN \n\
-10 Датских крон (DKK) за {dkk_price} BYN \n1 Доллар США (USD) за {usd_price} BYN \n1 Евро (EUR) за {eur_price} BYN \n10 Злотых (PLN) за \
-{pln_price} BYN \n100000 Иранских риал (IRR) за {irr_price} BYN \n100 Исландских крон (ISK) за {isk_price} BYN \n100 Йен (JPY) за {jpy_price} \
-BYN \n1 Канадский доллар (CAD) за {cad_price} BYN \n10 Китайских юаней (CNY) за {cny_price} BYN \n1 Кувейтский динар (KWD) за {kwd_price} BYN \n\
-10 Молдавских лей (MDL) за {mdl_price} BYN \n1 Новозеландский доллар (NZD) за {nzd_price} BYN \n10 Норвежских крон (NOK) за {nok_price} BYN \n\
-100 Российских рублей (RUB) за {rub_price} BYN \n1 СДР (Специальные права заимствования) (XDR) за {xdr_price} BYN \n1 Сингапурский доллар \
-(SGD) за {sgd_price} BYN \n100 Сом (KGS) за {kgs_price} BYN \n1000 Тенге (KZT) за {kzt_price} BYN \n10 Турецких лир (TRY) за {try_price} BYN \n\
-1 Фунт стерлингов (GBP) за {gbp_price} BYN \n100 Чешских крон (CZK) за {czk_price} BYN \n10 Шведских крон (SEK) {sek_price} BYN \n\
-1 Швейцарский франк (CHF) {chf_price} BYN')
+	bot.send_message(message.chat.id, money)
 
 
 @bot.callback_query_handler(lambda c: c.data == '/course_usd')
 def course_usd(callback_query: telebot.types.CallbackQuery):
 	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'USD':
-			usd_price = p['Cur_OfficialRate']		
-	bot.send_message(callback_query.from_user.id, f'Курс Белорусского рубля (BYN) к Доллару (USD) на сегодня: \n1 USD за {usd_price} BYN')
+	usd = money_list[4]		
+	bot.send_message(callback_query.from_user.id, usd +' BYN')
 
 @bot.message_handler(commands=['course_usd'])
 def usd(message):
 	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'USD':
-			usd_price = p['Cur_OfficialRate']		
-	bot.send_message(message.chat.id, f'Курс Белорусского рубля (BYN) к Доллару (USD) на сегодня: \n1 USD за {usd_price} BYN')
+	usd = money_list[4]
+	bot.send_message(message.chat.id,usd +' BYN')
 
 
 @bot.callback_query_handler(lambda c: c.data == '/course_eur')
 def course_usd(callback_query: telebot.types.CallbackQuery):
 	money = data_money()
-	for p in list(money):
-			if p["Cur_Abbreviation"] == 'EUR':
-				eur_price = p['Cur_OfficialRate']		
-	bot.send_message(callback_query.from_user.id, f'Курс Белорусского рубля (BYN) к Евро (EUR) на сегодня: \n1 EUR за {eur_price} BYN')
+	eur = money_list[5]
+	bot.send_message(callback_query.from_user.id, eur +' BYN')
 
 @bot.message_handler(commands=['course_eur'])
 def eur(message):
 	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'EUR':
-			eur_price = p['Cur_OfficialRate']		
-	bot.send_message(message.chat.id, f'Курс Белорусского рубля (BYN) к Евро (EUR) на сегодня: \n1 EUR за {eur_price} BYN')
+	eur = money_list[5]
+	bot.send_message(message.chat.id,eur +' BYN')
 
 
 @bot.callback_query_handler(lambda c: c.data == '/course_rub')
 def course_usd(callback_query: telebot.types.CallbackQuery):
 	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'RUB':
-			rub_price = p['Cur_OfficialRate']		
-	bot.send_message(callback_query.from_user.id, f'Курс Белорусского рубля (BYN) к Российскому рублю (RUB) на сегодня: \n100 RUB за {rub_price} BYN')
+	rub = money_list[16]
+	bot.send_message(callback_query.from_user.id, rub +' BYN')
 
 @bot.message_handler(commands=['course_rub'])
 def rub(message):
 	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'RUB':
-			rub_price = p['Cur_OfficialRate']		
-	bot.send_message(message.chat.id, f'Курс Белорусского рубля (BYN) к Российскому рублю (RUB) на сегодня: \n100 RUB за {rub_price} BYN')
+	rub = money_list[16]
+	bot.send_message(message.chat.id, rub +' BYN')
 
 
 @bot.callback_query_handler(lambda c: c.data == '/course_uah')
 def course_usd(callback_query: telebot.types.CallbackQuery):
 	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'UAH':
-			uah_price = p['Cur_OfficialRate']		
-	bot.send_message(callback_query.from_user.id, f'Курс Белорусского рубля (BYN) к Гривнам (UAH) на сегодня: \n100 UAH за {uah_price} BYN')
+	uah = money_list[2]
+	bot.send_message(callback_query.from_user.id, uah +' BYN')
 
 @bot.message_handler(commands=['course_uah'])
 def uah(message):
 	money = data_money()
-	for p in list(money):
-		if p["Cur_Abbreviation"] == 'UAH':
-			uah_price = p['Cur_OfficialRate']		
-	bot.send_message(message.chat.id, f'Курс Белорусского рубля (BYN) к Гривнам (UAH) на сегодня: \n100 UAH за {uah_price} BYN')
+	uah = money_list[2]
+	bot.send_message(message.chat.id, uah +' BYN')
 
 
 @bot.callback_query_handler(lambda m: m.data == '/movies')
